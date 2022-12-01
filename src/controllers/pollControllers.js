@@ -10,3 +10,14 @@ export async function postPoll(req, res) {
         return res.sendStatus(401);
     }
 }
+
+export async function getPolls(req, res) {
+    try {
+    const polls = await pollsCollection
+    .find()
+    .toArray();
+    return res.send(polls);
+    } catch(error) {
+        return res.sendStatus(400);
+    }
+}
