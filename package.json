@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon ./src/index.js",
-    "start": "node ./src/index.js"
+    "start": "node ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/lujolfs/drivencracy#readme",
   "dependencies": {
+    "@joi/date": "^2.1.0",
     "cors": "^2.8.5",
     "dayjs": "^1.11.6",
     "dotenv": "^16.0.3",

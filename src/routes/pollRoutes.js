@@ -1,8 +1,10 @@
 import { Router } from "express";
+import { schemaValidatePoll } from "../middlewares/schemaValidatePoll.js";
+import { postPoll } from "../controllers/pollControllers.js";
 
 const router = Router();
 
-router.post("/poll");
+router.post("/poll", schemaValidatePoll, postPoll);
 router.get("/poll");
 router.post("/choice");
 router.get("/poll/:id/choice");
