@@ -21,3 +21,22 @@ export async function getPolls(req, res) {
         return res.sendStatus(400);
     }
 }
+
+export async function postChoice(req, res) {
+    const pollId = req.body._id;
+    const pollChoice = req.body.title;
+    try {
+    const polls = await pollsCollection
+    .findOne(pollId)
+    .toArray();
+    if (!polls) {
+            return res.sendStats(404);
+        }
+    else {
+        const addChoice = await pollsCollection
+        .findOneAndUpdate(pollId, {$push: {choices: pollChoice}})
+    }}
+    catch (error) {
+        return res.sendStatus(400);
+    }
+}
