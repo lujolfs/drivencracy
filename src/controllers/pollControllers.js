@@ -1,4 +1,3 @@
-import { ObjectID } from "mongodb";
 import { pollsCollection } from "../database/db.js";
 import { ObjectId } from "mongodb";
 
