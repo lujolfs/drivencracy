@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { schemaValidatePoll } from "../middlewares/schemaValidatePoll.js";
 import { schemaValidateChoice } from "../middlewares/schemaValidateChoice.js"
-import { postPoll, getPolls, postChoice, getChoices, postVote } from "../controllers/pollControllers.js";
+import { postPoll, getPolls, postChoice, getChoices, postVote, getResults } from "../controllers/pollControllers.js";
 
 const router = Router();
 
@@ -10,6 +10,6 @@ router.get("/poll", getPolls);
 router.post("/choice", schemaValidateChoice, postChoice);
 router.get("/poll/:id/choice", getChoices);
 router.post("/choice/:id/vote", postVote);
-router.get("/poll/:id/result");
+router.get("/poll/:id/result", getResults);
 
 export default router;
