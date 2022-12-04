@@ -7,7 +7,7 @@ const router = Router();
 
 router.post("/poll", schemaValidatePoll, postPoll);
 router.get("/poll", getPolls);
-router.post("/choice", schemaValidateChoice);
+router.post("/choice", schemaValidateChoice, postChoice);
 router.get("/poll/:id/choice");
 router.post("/choice/:id/vote");
 router.get("/poll/:id/result")

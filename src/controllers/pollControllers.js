@@ -1,5 +1,6 @@
 import { ObjectID } from "mongodb";
 import { pollsCollection } from "../database/db.js";
+import { ObjectId } from "mongodb";
 
 export async function postPoll(req, res) {
     const pollObject = req.body;
@@ -23,19 +24,13 @@ export async function getPolls(req, res) {
 }
 
 export async function postChoice(req, res) {
-    const pollId = req.body._id;
+    const poll = req.body;
+    const filter = {_id: ObjectId(poll.pollId)};
     const pollChoice = req.body.title;
     try {
-    const polls = await pollsCollection
-    .findOne(pollId)
-    .toArray();
-    if (!polls) {
-            return res.sendStats(404);
-        }
-    else {
-        const addChoice = await pollsCollection
-        .findOneAndUpdate(pollId, {$push: {choices: pollChoice}})
-    }}
+        await pollsCollection.findOneAndUpdate(filter, {$push: {choices: pollChoice}})
+        return res.sendStatus(201);
+    }
     catch (error) {
         return res.sendStatus(400);
     }

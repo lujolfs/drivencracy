@@ -1,5 +1,6 @@
 import { pollsCollection } from "../database/db.js";
 import { choiceSchema } from "../modules/choiceSchema.js"
+import { ObjectId } from "mongodb";
 import dayjs from "dayjs";
 
 export async function schemaValidateChoice (req, res, next) {
@@ -17,10 +18,8 @@ export async function schemaValidateChoice (req, res, next) {
     }
 
     try {
-        const pollExists = await pollsCollection.findOne( {pollId: filter} );
-        if (day.diff(pollExists.expireAt) > 0) {
-            return res.sendStatus(403);
-        }
+        const pollExists = await pollsCollection.findOne( {_id: ObjectId(filter)} );
+        next();
     } catch (error) {
         return res.sendStatus(404);
     }
