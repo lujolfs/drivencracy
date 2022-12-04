@@ -1,5 +1,6 @@
-import { pollsCollection } from "../database/db.js";
+import { pollsCollection, choicesCollection } from "../database/db.js";
 import { ObjectId } from "mongodb";
+import { query } from "express";
 
 export async function postPoll(req, res) {
     const pollObject = req.body;
@@ -23,11 +24,9 @@ export async function getPolls(req, res) {
 }
 
 export async function postChoice(req, res) {
-    const poll = req.body;
-    const filter = {_id: ObjectId(poll.pollId)};
-    const pollChoice = req.body.title;
+    const choice = req.body;
     try {
-        await pollsCollection.findOneAndUpdate(filter, {$push: {choices: pollChoice}})
+        await choicesCollection.insertOne(choice);
         return res.sendStatus(201);
     }
     catch (error) {
@@ -36,12 +35,12 @@ export async function postChoice(req, res) {
 }
 
 export async function getChoices(req, res) {
-    const pollId = req.params;
-    const filter = {_id: ObjectId(pollId)};
+    const pollIdRoute = req.params.id;
+    const query = {'pollId': pollIdRoute};
     try {
-        const polls = await pollsCollection.find(filter).project({ choices: 1 }).toArray();
-        return res.send(polls);
+        const choices = await choicesCollection.find(query).toArray();
+        return res.send(choices);
     } catch (error) {
-        return res.send(123)
+        return res.sendStatus(404)
     }
 }
