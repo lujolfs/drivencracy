@@ -34,3 +34,14 @@ export async function postChoice(req, res) {
         return res.sendStatus(400);
     }
 }
+
+export async function getChoices(req, res) {
+    const pollId = req.params;
+    const filter = {_id: ObjectId(pollId)};
+    try {
+        const polls = await pollsCollection.find(filter).project({ choices: 1 }).toArray();
+        return res.send(polls);
+    } catch (error) {
+        return res.send(123)
+    }
+}
