@@ -17,11 +17,19 @@ export async function postChoice(req, res) {
 export async function getChoices(req, res) {
     const pollIdRoute = req.params.id;
     const query = {'pollId': pollIdRoute};
+    
+    
+    try {
+        await pollsCollection.find({ _id: ObjectId(pollIdRoute) }).toArray();
+    } catch (error) {
+        return res.sendStatus(404)
+    }
+
     try {
         const choices = await choicesCollection.find(query).toArray();
         return res.send(choices);
     } catch (error) {
-        return res.sendStatus(404)
+        return res.sendStatus(error)
     }
 }
 
