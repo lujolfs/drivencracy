@@ -45,11 +45,31 @@ export async function postVote(req, res) {
         createdAt: dayjs().format('YYYY-MM-DD hh:mm'),
         choiceId: ObjectId(vote)
     }
+    const checkExistence = await choicesCollection.findOne({_id: ObjectId(vote)});
+
+    try {
+        if (!checkExistence) {
+            return res.sendStatus(404)
+        }
+    } catch (error) {
+        return res.send(error)
+    }
+
+    try {
+        const expiryPoll = await pollsCollection.findOne({_id: ObjectId(checkExistence.pollId)});
+        const expiryCheck = dayjs().isBefore(expiryPoll.expireAt, 'millisecond');
+        if (!expiryCheck) {
+            return res.sendStatus(403);
+        }
+    } catch (error) {
+            return res.send(error);
+    }
+
     try {
         await votesCollection.insertOne(docVote)
         await choicesCollection.findOneAndUpdate( {_id: ObjectId(vote)}, updateVote, optionVote )
         return res.sendStatus(201);
     } catch (error) {
-        return res.sendStatus(404)
+        return res.sendStatus(error)
     }
 }
