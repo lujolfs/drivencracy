@@ -4,7 +4,7 @@ import { query } from "express";
 import dayjs from "dayjs";
 
 export async function postPoll(req, res) {
-    const pollObject = req.body;
+    const pollObject = res.locals.user;
     try {
         await pollsCollection.insertOne(pollObject);
         return res.sendStatus(201);
