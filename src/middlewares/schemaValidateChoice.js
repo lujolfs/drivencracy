@@ -1,7 +1,6 @@
 import { pollsCollection } from "../database/db.js";
 import { choiceSchema } from "../modules/choiceSchema.js"
 import { ObjectId } from "mongodb";
-import dayjs from "dayjs";
 
 export async function schemaValidateChoice (req, res, next) {
     const poll = req.body;

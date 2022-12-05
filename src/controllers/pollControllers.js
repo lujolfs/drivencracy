@@ -1,6 +1,5 @@
 import { pollsCollection, choicesCollection, votesCollection, resultsCollection } from "../database/db.js";
 import { ObjectId } from "mongodb";
-import { query } from "express";
 import dayjs from "dayjs";
 
 export async function postPoll(req, res) {
@@ -20,17 +19,6 @@ export async function getPolls(req, res) {
     .toArray();
     return res.send(polls);
     } catch(error) {
-        return res.sendStatus(400);
-    }
-}
-
-export async function postChoice(req, res) {
-    const choice = req.body;
-    try {
-        await choicesCollection.insertOne(choice);
-        return res.sendStatus(201);
-    }
-    catch (error) {
         return res.sendStatus(400);
     }
 }
