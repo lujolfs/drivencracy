@@ -13,3 +13,35 @@ export async function postChoice(req, res) {
         return res.sendStatus(400);
     }
 }
+
+export async function getChoices(req, res) {
+    const pollIdRoute = req.params.id;
+    const query = {'pollId': pollIdRoute};
+    try {
+        const choices = await choicesCollection.find(query).toArray();
+        return res.send(choices);
+    } catch (error) {
+        return res.sendStatus(404)
+    }
+}
+
+export async function postVote(req, res) {
+    const vote = req.params.id;
+    const updateVote = {
+        $inc: {
+            votes: +1
+        }
+    }
+    const optionVote = { upsert: true };
+    const docVote = {
+        createdAt: dayjs().format('YYYY-MM-DD hh:mm'),
+        choiceId: ObjectId(vote)
+    }
+    try {
+        await votesCollection.insertOne(docVote)
+        await choicesCollection.findOneAndUpdate( {_id: ObjectId(vote)}, updateVote, optionVote )
+        return res.sendStatus(201);
+    } catch (error) {
+        return res.sendStatus(404)
+    }
+}
